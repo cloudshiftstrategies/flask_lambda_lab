@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class=container>
+
+	<div class=jumbotron>
+		<h1>Hello World!</h1>
+		<p>This Flask application was deployed into AWS Lambda using Zappa. It is made beautiful by the Boostrap CSS libray<p>
+	</div>
+
+	<div class=row>
+		<div class=col-md-3>
+			<div class=thumbnail>
+				<a href=http://flask.pocoo.org/>
+					<img src=http://flask.pocoo.org/static/logo/flask.png height=200px>
+				</a>
+				<p>Flask is a microframework for Python based on Werkzeug, Jinja 2 and 
+					good intentions.</p>
+			</div>
+		</div>
+
+		<div class=col-md-3>
+			<div class=thumbnail>
+				<a href=https://www.zappa.io/>
+					<img src=https://camo.githubusercontent.com/7bdd37b656c15786839d868e1075cdf1926d4272/687474703a2f2f692e696d6775722e636f6d2f6f65506e484a6e2e6a7067 height=200>
+				</a>
+				<p>Zappa makes it super easy to build and deploy all Python WSGI applications 
+					on AWS Lambda + API Gateway. Think of it as "serverless" web hosting for 
+					your Python apps. That means infinite scaling, zero downtime, 
+					zero maintenance - and at a fraction of the cost of your current deployments!</p>
+			</div>
+		</div>
+
+		<div class=col-md-3>
+			<div class=thumbnail>
+				<a href=https://aws.amazon.com/lambda/>
+					<img src=https://www.sumologic.com/wp-content/uploads/AWS-Lambda-600x400-3.png height=200>
+				</a>
+				<p>AWS Lambda lets you run code without provisioning or managing servers. 
+					You pay only for the compute time you consume — there is no charge when 
+					your code is not running.</p>
+			</div>
+		</div>
+
+		<div class=col-md-3>
+			<div class=thumbnail>
+				<a href=http://getbootstrap.com>
+					<img src=http://getbootstrap.com/assets/img/bootstrap-stack.png width=200>
+				</a>
+				<p>Bootstrap is an open source toolkit for developing with HTML, CSS, and 
+					JS. Quickly prototype your ideas or build your entire app with our Sass 
+					variables and mixins, responsive grid system, extensive prebuilt 
+					components, and powerful plugins built on jQuery.</p>
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock %}
