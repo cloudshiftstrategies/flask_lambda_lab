@@ -8,4 +8,7 @@ Each Lesson will be built as a git branch off of the master "hello world" applic
 pip install Flask
 pip install zappa
 
+## This is lesson 2 branch
+
+In this lesson we will make the hello world application a little prettier using CSS and templates
 
