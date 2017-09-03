@@ -31,7 +31,7 @@ def gallery():
 
     # connect to s3
     s3 = resource('s3')
-    bucket = s3.Bucket(app.config['BUCKET_NAME'])
+    bucket = s3.Bucket(app.config['UPLOAD_BUCKET'])
     files = []
 
     # iterate through the filtered list of objects
@@ -60,7 +60,7 @@ def upload():
     s3 = client('s3')
     # Generate the POST URL & fields
     post = s3.generate_presigned_post(
-        Bucket = app.config['BUCKET_NAME'],
+        Bucket = app.config['UPLOAD_BUCKET'],
         Fields = {'acl': 'public-read', 'content-type': 'image/png'},
         Key =  '${filename}',
         Conditions = [{'acl': 'public-read'}, {'content-type': 'image/png'}]

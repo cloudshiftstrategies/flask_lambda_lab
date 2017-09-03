@@ -4,7 +4,7 @@
 
 <div class=container>
 	<div class=row>
-		<h2>Upload a File to Bucket: {{config.BUCKET_NAME}}</h2>
+		<h2>Upload a File to Bucket: {{config.UPLOAD_BUCKET}}</h2>
 	</div>
 	<div class=row>
 		<div class=col-md-3></div>
@@ -16,13 +16,14 @@
 				{% endfor %}
 				<div class=row>
 				<div class="form-group">
-					<input type="file" name="file" class="file">
+					<input type="file" name="file" class="file" 
+						accept="image/jpg, image/png">
 					<div class="input-group col-xs-12">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-picture"></i>
 						</span>
 						<input type="text" class="form-control input-lg"
-                 disabled placeholder="Upload Image">
+                 disabled placeholder="Upload PNG or JPG Image">
 						<span class="input-group-btn">
 							<button class="browse btn btn-primary input-lg" type="button">
 								<i class="glyphicon glyphicon-search"></i>
