@@ -1,1 +1,0 @@
-bucketName="flasklambdalab-uploads-b2efa022"
