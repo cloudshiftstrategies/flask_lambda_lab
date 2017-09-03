@@ -8,7 +8,8 @@ SITE_ICON = "https://s3-us-west-2.amazonaws.com/flasklambdalab-static/lambda_ico
 LAB_BLOG_URL = "http://www.cloudshiftstrategies.com/flasklambdalab.html"
 
 PAGES=[
-    {"title":"Lab Blog","url":LAB_BLOG_URL},
+    {'title':'Lab Blog','url':LAB_BLOG_URL},
+    {'title':'Load Gen','url':'loadgen'},
     ]
 
 

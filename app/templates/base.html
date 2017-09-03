@@ -26,7 +26,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a href=/ class="navbar-brand">
+			<a href={{request.base_url}} class="navbar-brand">
 				<img class="img-responsive pull-left gap-right" 
 					src="{{ config.SITE_ICON }}" 
 					style="position:relative;top:-40%;height:40px;padding-right:10px;">
@@ -36,7 +36,11 @@
 			<ul class="nav navbar-nav">
 				<!-- Page Navigation -->
 				{% for page in config.PAGES %}
-					<li><a href="{{ page["url"] }}">{{ page["title"] }}</a></li>
+					{% if not "http" in page['url'] %}
+					<li><a href="{{ request.base_url }}{{ page['url'] }}">{{ page["title"] }}</a></li>
+					{% else %}
+						<li><a href="{{ page["url"] }}">{{ page["title"] }}</a></li>
+					{% endif %}
 				{% endfor %}
 			</ul>
 		</div>
