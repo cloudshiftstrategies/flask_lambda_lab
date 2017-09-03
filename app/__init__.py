@@ -3,6 +3,7 @@ from flask import render_template
 app = Flask(__name__)
 
 app.config.from_object('config')
+app.config.from_object('bucketConfig')
 
 @app.route("/")
 def index():
@@ -22,3 +23,7 @@ def loadgen():
     seconds = end - start
     return render_template('loadgen.html', iters=iterations,
             duration = seconds)
+
+@app.route("/gallery")
+def gallery():
+    return render_template('gallery.html')

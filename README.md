@@ -8,7 +8,8 @@ Each Lesson will be built as a git branch off of the master "hello world" applic
 pip install Flask
 pip install zappa
 
-## This is lesson 2 branch
+## This is lesson 3 branch
 
-In this lesson we will make the hello world application a little prettier using CSS and templates
+In this lesson we will setup an s3 bucket to store image files and 
+cretae a lambda trigger that creates thumbnails on upload
 
