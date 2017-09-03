@@ -4,7 +4,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 SITE_TITLE = "Flask Lambda Lab"
-SITE_ICON = "https://files.gamebanana.com/img/ico/sprays/4fe75a6b5f82c.png"
+SITE_ICON = "https://s3-us-west-2.amazonaws.com/flasklambdalab-static/lambda_icon.png"
 LAB_BLOG_URL = "http://www.cloudshiftstrategies.com/flasklambdalab.html"
 
 PAGES=[
