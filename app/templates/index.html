@@ -5,7 +5,8 @@
 	<div class=jumbotron>
 		<h1>Hello World!</h1>
 		<p>
-			This Flask application was deployed into AWS Lambda using Zappa. It is made beautiful by the Boostrap CSS libray
+			This Flask application was deployed into AWS Lambda using Zappa. 
+			It is made beautiful by the Boostrap CSS libray
 		</p>
 	</div>
 
@@ -13,10 +14,12 @@
 		<div class=col-md-3>
 			<div class=thumbnail>
 				<a href=http://flask.pocoo.org/>
-					<img src=https://s3-us-west-2.amazonaws.com/flasklambdalab-static/flask.png width=250 style="margin-top:20px;">
+					<img src={{ config.STATIC_URL }}flask.png width=250 
+						style="margin-top:20px;">
 				</a>
 				<p style="margin-top:2em;">
-					Flask is a microframework for Python based on Werkzeug, Jinja 2 and good intentions.
+					Flask is a microframework for Python based on Werkzeug, Jinja 2
+					and good intentions.
 				</p>
 			</div>
 		</div>
@@ -24,13 +27,14 @@
 		<div class=col-md-3>
 			<div class=thumbnail>
 				<a href=https://www.zappa.io/>
-					<img src=https://s3-us-west-2.amazonaws.com/flasklambdalab-static/zappa.jpg width=260>
+					<img src={{ config.STATIC_URL }}zappa.jpg width=260>
 				</a>
 				<p style="margin-top:1em;">
-					Zappa makes it super easy to build and deploy all Python WSGI applications 
-					on AWS Lambda + API Gateway. Think of it as "serverless" web hosting for 
-					your Python apps. That means infinite scaling, zero downtime, 
-					zero maintenance - and at a fraction of the cost of your current deployments!
+					Zappa makes it super easy to build and deploy all Python WSGI 
+					applications on AWS Lambda + API Gateway. Think of it as 
+					"serverless" web hosting for your Python apps. That means 
+					infinite scaling, zero downtime, zero maintenance - and at a 
+					fraction of the cost of your current deployments!
 				</p>
 			</div>
 		</div>
@@ -38,12 +42,12 @@
 		<div class=col-md-3>
 			<div class=thumbnail>
 				<a href=https://aws.amazon.com/lambda/>
-					<img src=https://s3-us-west-2.amazonaws.com/flasklambdalab-static/lambda.png width=180>
+					<img src={{ config.STATIC_URL }}lambda.png width=180>
 				</a>
 				<p style="margin-top:1em;">
-					AWS Lambda lets you run code without provisioning or managing servers. 
-					You pay only for the compute time you consume — there is no charge when 
-					your code is not running.
+					AWS Lambda lets you run code without provisioning or managing 
+					servers. You pay only for the compute time you consume — there 
+					is no charge when your code is not running.
 				</p>
 			</div>
 		</div>
@@ -51,13 +55,14 @@
 		<div class=col-md-3>
 			<div class=thumbnail>
 				<a href=http://getbootstrap.com>
-					<img src=https://s3-us-west-2.amazonaws.com/flasklambdalab-static/bootstrap.png width=160>
+					<img src={{ config.STATIC_URL }}bootstrap.png width=160>
 				</a>
 				<p style="margin-top:1em;">
-					Bootstrap is an open source toolkit for developing with HTML, CSS, and 
-					JS. Quickly prototype your ideas or build your entire app with our Sass 
-					variables and mixins, responsive grid system, extensive prebuilt 
-					components, and powerful plugins built on jQuery.
+					Bootstrap is an open source toolkit for developing with HTML, 
+					CSS, and JS. Quickly prototype your ideas or build your entire 
+					app with our Sass variables and mixins, responsive grid system,
+					extensive prebuilt components, and powerful plugins built on 
+					jQuery.
 				</p>
 			</div>
 		</div>

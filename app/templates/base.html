@@ -1,5 +1,5 @@
 <head>
-	<link rel="icon" href={{config.SITE_ICON}}>
+	<link rel="icon" href={{config.FAV_ICON}}>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title> {{ config.SITE_TITLE }} </title>
 	<!-- Include several stylesheets to improve the look and feel of our web page -->
@@ -26,9 +26,9 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a href={{request.base_url}} class="navbar-brand">
+			<a href={{ url_for('index') }} class="navbar-brand">
 				<img class="img-responsive pull-left gap-right" 
-					src="{{ config.SITE_ICON }}" 
+					src="{{ config.FAV_ICON }}" 
 					style="position:relative;top:-40%;height:40px;padding-right:10px;">
 				{{ config.SITE_TITLE }}</a>
 		</div>
@@ -36,10 +36,12 @@
 			<ul class="nav navbar-nav">
 				<!-- Page Navigation -->
 				{% for page in config.PAGES %}
-					{% if not "http" in page['url'] %}
-					<li><a href="{{ request.base_url }}{{ page['url'] }}">{{ page["title"] }}</a></li>
+					{% if page['route'] %}
+					<li><a href="{{ url_for(page['route']) }}">
+							{{ page["title"] }}</a></li>
 					{% else %}
-						<li><a href="{{ page["url"] }}">{{ page["title"] }}</a></li>
+						<li><a href="{{ page["url"] }}">
+								{{ page["title"] }}</a></li>
 					{% endif %}
 				{% endfor %}
 			</ul>

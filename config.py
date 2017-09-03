@@ -1,17 +1,19 @@
 # config.py
-
 import os
-basedir = os.path.abspath(os.path.dirname(__file__))
 
-SITE_TITLE = "Flask Lambda Lab"
-SITE_ICON = "https://s3-us-west-2.amazonaws.com/flasklambdalab-static/lambda_icon.png"
-LAB_BLOG_URL = "http://www.cloudshiftstrategies.com/flasklambdalab.html"
+# Title of the site
+SITE_TITLE = 'Flask Lambda Lab'
+# The URL for static files/images
+STATIC_URL = 'https://s3-us-west-2.amazonaws.com/flasklambdalab-static/'
+# The name of the 
+FAV_ICON = STATIC_URL + 'lambda_icon.png'
 
+# Pages to show on the nav menu (provide a url or route)
 PAGES=[
-    {'title':'Lab Blog','url':LAB_BLOG_URL},
-    {'title':'Load Gen','url':'loadgen'},
+    {'title':'Lab Blog',
+        'url':'https://www.cloudshiftstrategies.com/flasklambdalab.html'},
+    {'title':'Load Gen','route':'loadgen'},
     ]
-
 
 # Bootstrap CSS files to include in each page included in ./app/templates/base.html
 CSS_INCLUDES=[
