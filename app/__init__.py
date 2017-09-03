@@ -26,4 +26,43 @@ def loadgen():
 
 @app.route("/gallery")
 def gallery():
-    return render_template('gallery.html')
+    from boto3 import resource
+    from urllib import quote
+
+    # connect to s3
+    s3 = resource('s3')
+    bucket = s3.Bucket(app.config['BUCKET_NAME'])
+    files = []
+
+    # iterate through the filtered list of objects
+    for object in bucket.objects.filter():
+        file = {}
+        file['name'] = object.key
+        # Get object URL (could use signed URLs)
+        object_url = 'http://' + object.bucket_name
+        object_url += '.s3.amazonaws.com/'
+        object_url += quote(object.key)
+        file['url'] = object_url
+        # Get the object size in KB
+        object_size = round(float(object.size) / 1024, 1)
+        file['size'] = object_size
+        # Get the object last modified date & time (w/ out secs)
+        object_date = str(object.last_modified).split("+")[0]
+        file['date'] = object_date
+        # append file to list of files
+        files.append(file)
+    return render_template('gallery.html', files = files)
+
+# Uploads Page
+@app.route('/upload')
+def upload():
+    from boto3 import client
+    s3 = client('s3')
+    # Generate the POST URL & fields
+    post = s3.generate_presigned_post(
+        Bucket = app.config['BUCKET_NAME'],
+        Fields = {'acl': 'public-read', 'content-type': 'image/png'},
+        Key =  '${filename}',
+        Conditions = [{'acl': 'public-read'}, {'content-type': 'image/png'}]
+    )
+    return render_template('upload.html', post = post)
