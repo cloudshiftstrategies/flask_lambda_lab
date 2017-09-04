@@ -29,7 +29,7 @@ data["dev"]["events"] = [{
             "event_source": {
                   "arn":  "arn:aws:s3:::%s" %bucketConfig.UPLOAD_BUCKET,
                   "events": [
-                    "s3:ObjectCreated:*"
+                    "s3:ObjectCreated:Post"
                   ]
                }
             }]

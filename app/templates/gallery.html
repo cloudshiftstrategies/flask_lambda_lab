@@ -16,6 +16,7 @@
 			<table id='gallery' class='table table-striped table-bordered' 
 					cellspacing='0' width='100%'>
 				<thead><tr>
+					<th>Thumb</th>
 					<th>Name</th>
 					<th>Size</th>
 					<th>Date</th>
@@ -23,6 +24,7 @@
 				<tbody>
 					{% for file in files %}
 						<tr>
+							<td> <a href="{{ file.url }}"><img src="{{ file.thumburl }}"></a></td>
 							<td> <a href="{{ file.url }}">{{ file.name }}</a></td>
 							<td> {{ file.size }} </td>
 							<td> {{ file.date }} </td>
