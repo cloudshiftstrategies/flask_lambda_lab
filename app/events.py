@@ -1,4 +1,4 @@
-import boto3
+import boto3, urllib
 from PIL import Image
 from app import app
 
@@ -13,7 +13,12 @@ def s3_uploadTrigger(event, context):
 
     # Get the uploaded file's information passed to us in the event
     bucket = event['Records'][0]['s3']['bucket']['name']
-    key = event['Records'][0]['s3']['object']['key']
+    # NOTE A bug in old version of boto3 (which lambda uses) converts
+    # each space in key name to a '+', which cases downloads to break
+    # It should work like this:
+    #key = event['Records'][0]['s3']['object']['key']
+    # But the fix is to urlencode the event string that contains key name
+    key = urllib.unquote_plus(event['Records'][0]['s3']['object']['key'].encode("utf8"))
     print "Trigger Bucket: '%s', Key: '%s'" %(bucket, key)
 
     # Download the uploaded file from S3 save to writable tmp space.
