@@ -1,8 +1,16 @@
-#!/bin/env python
-import boto3, json, uuid
+#!/usr/bin/env python
+"""
+This script creates (or updates) 2 s3 buckets. One for uploads and the
+other bucket is to store thumbnails. We then write the bucket names
+tothe bucketConfig file.
 
-uploadPrefix = 'flasklambdalab-uploads-'
-thumbPrefix = 'flasklambdalab-thumbnails-'
+The buckets must be created in the same region that the lambda function
+lives becuase we will later create a trigger between the s3 uploads bucket
+and the s3_eventTrigger function. We get the region name from the
+zappa_settings file
+"""
+
+import boto3, json, uuid
 
 bucketConfig = 'bucketConfig.py'
 bucketAcl = 'public-read'
@@ -14,9 +22,21 @@ thumbBucket = None
 zappa_settings = 'zappa_settings.json'
 with open(zappa_settings) as data_file:
    data = json.load(data_file)
-region=data['dev']['aws_region']
+stage=data.keys()[0]
+region=data[stage]['aws_region']
+
 print "Using aws region: %s" % region
-locationConstraint = {'LocationConstraint': region }
+
+uploadPrefix = "flasklambdalab-%s-uploads-" %stage
+thumbPrefix = "flasklambdalab-%s-thumbnails-" %stage
+
+# Create location constraint dict. 
+# NOTE: with AWS boto3 API, if you dont provide a location (region) 
+# contraint, it will put the bucket in the primary region (us-east-1). 
+# If you want the bucket to be created in any other region, you must 
+# supply a region location constraint. 
+# The odd behavior is that if you specifiy 'us-east-1' as a region via
+# the location constraint, it will error out. Go figure. 
 
 # Create an s3 client object
 client = boto3.client('s3')
@@ -27,6 +47,7 @@ for bucket in client.list_buckets()['Buckets']:
     if uploadPrefix in bucket['Name']:
         # We found one... make sure its in the correct region
         bucketRegion = client.get_bucket_location(Bucket=bucket['Name'])['LocationConstraint']
+        if bucketRegion == None: bucketRegion = 'us-east-1'
         if bucketRegion == region:
             #its in the right region, get the bucket name
             uploadBucket = bucket['Name']
@@ -36,6 +57,7 @@ for bucket in client.list_buckets()['Buckets']:
     if thumbPrefix in bucket['Name']:
         # We found one... make sure its in the correct region
         bucketRegion = client.get_bucket_location(Bucket=bucket['Name'])['LocationConstraint']
+        if bucketRegion == None: bucketRegion = 'us-east-1'
         if bucketRegion == region:
             #its in the right region, get the bucket name
             thumbBucket = bucket['Name']
@@ -48,8 +70,11 @@ if not uploadBucket:
     uploadBucket = uploadPrefix + str(uuid.uuid1())[:8]
     # And create the bucket
     print "Creating upload bucket: '%s'" % uploadBucket
-    client.create_bucket(Bucket=uploadBucket,
-            CreateBucketConfiguration = locationConstraint)
+    if region == 'us-east-1':
+        client.create_bucket(Bucket=uploadBucket)
+    else:
+        client.create_bucket(Bucket=uploadBucket,
+                CreateBucketConfiguration = {'LocationConstraint': region})
 
 # Check to see if the previous loop found a thumb bucket
 if not thumbBucket:
@@ -58,8 +83,11 @@ if not thumbBucket:
     thumbBucket = thumbPrefix + str(uuid.uuid1())[:8]
     # And create the bucket
     print "Creating thumb bucket: '%s'" % thumbBucket
-    client.create_bucket(Bucket=thumbBucket,
-            CreateBucketConfiguration = locationConstraint)
+    if region == 'us-east-1':
+        client.create_bucket(Bucket=thumbBucket)
+    else:
+        client.create_bucket(Bucket=thumbBucket,
+                CreateBucketConfiguration = {'LocationConstraint': region})
 
 # Set the ACLs for the bucket (new or existing)
 print "Setting bucket ACLs: '%s'" % bucketAcl
