@@ -13,6 +13,8 @@ PAGES=[
     {'title':'Lab Blog',
         'url':'https://www.cloudshiftstrategies.com/flasklambdalab.html'},
     {'title':'Load Gen','route':'loadgen'},
+    {'title':'Gallery','route':'gallery'},
+    {'title':'Upload','route':'upload'},
     ]
 
 # Bootstrap CSS files to include in each page included in ./app/templates/base.html
@@ -26,7 +28,7 @@ CSS_INCLUDES=[
 JS_INCLUDES=[
     'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js',
     'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js',
-    'https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js',
     'https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js',
+    'https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js',
     ]

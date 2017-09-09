@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class=container>
+	<div class=row>
+		<h2>Upload a File to Bucket: {{config.UPLOAD_BUCKET}}</h2>
+	</div>
+	<div class=row>
+		<div class=col-md-3></div>
+		<div class=col-md-6>
+			<form action="{{ post['url'] }}" method="POST" 
+						enctype="multipart/form-data">
+				{% for parmName, value in post['fields'].iteritems() %}
+					<input type="hidden" name="{{ parmName }}" value="{{ value }}" />
+				{% endfor %}
+				<div class=row>
+				<div class="form-group">
+					<input type="file" name="file" class="file" 
+						accept="image/jpg, image/png">
+					<div class="input-group col-xs-12">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-picture"></i>
+						</span>
+						<input type="text" class="form-control input-lg"
+                 disabled placeholder="Upload PNG or JPG Image">
+						<span class="input-group-btn">
+							<button class="browse btn btn-primary input-lg" type="button">
+								<i class="glyphicon glyphicon-search"></i>
+								Browse
+							</button>
+						</span>
+					</div>
+				</div>
+				<input type="submit" name="submit" value="Upload" 
+								class="btn btn-primary"/>
+			</form>
+			<form>
+				<div class="progress">
+					<div class="bar progress-bar percent"
+								role="progressbar" aria-valuenow="0"
+								aria-valuemin="0" aria-valuemax="100"
+								style="width:0%">0%</div>
+					</div>
+        <div id="status"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  //status bar
+  $(function() {
+    var bar = $('.bar');
+    var percent = $('.percent');
+    var status = $('#status');
+    $('form').ajaxForm({
+      beforeSend: function() {
+        status.empty();
+        var percentVal = '0%';
+        bar.width(percentVal);
+        percent.html(percentVal);
+      },
+      uploadProgress: function(event, position, total, percentComplete) {
+        var percentVal = percentComplete + '%';
+        bar.width(percentVal);
+        percent.html(percentVal);
+        if ( percentVal == "100%" ){
+          percent.html("Complete!");
+        }
+      },
+      complete: function(xhr) {
+        status.html(xhr.responseText);
+      }
+    });
+  });
+
+  //file browser
+  $(document).on('click', '.browse', function(){
+    var file = $(this).parent().parent().parent().find('.file');
+    file.trigger('click');
+  });
+
+  $(document).on('change', '.file', function(){
+    $(this)
+    .parent()
+    .find('.form-control')
+    .val($(this).val().replace(/C:\\fakepath\\/,""));
+  });
+</script>
+
+<style>
+  .file {
+    visibility: hidden;
+    position: absolute;
+  }
+</style>
+
+
+{% endblock %}
