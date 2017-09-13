@@ -35,11 +35,12 @@ for bucket in client.list_buckets()['Buckets']:
     if bucketStr in bucket['Name']:
         # we have a match, but we have to delete the contents first
         print "deleting objects in bucket: %s" % bucket['Name']
-        # List all the objects in the bucket
-        for obj in client.list_objects(Bucket=bucket['Name'])['Contents']:
-            # Delete each object
-            print "  deleting object: %s" % obj['Key']
-            client.delete_object(Bucket=bucket['Name'], Key=obj['Key'])
+        if client.list_objects(Bucket=bucket['Name']).has_key('Contents'):
+            # List all the objects in the bucket
+            for obj in client.list_objects(Bucket=bucket['Name'])['Contents']:
+                # Delete each object
+                print "  deleting object: %s" % obj['Key']
+                client.delete_object(Bucket=bucket['Name'], Key=obj['Key'])
         # Now we can delete the bucket
         print "deleting bucket: %s" % bucket['Name']
         client.delete_bucket(Bucket=bucket['Name'])
