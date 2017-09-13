@@ -39,8 +39,10 @@ copyfile( zappa_settings, backupFile )
 with open(zappa_settings) as data_file:
     data = json.load(data_file)
 
-# Isert our event trigger into the zappa json config
-data["dev"]["events"] = [{
+stage = data.keys()[0]
+
+# Insert our event trigger into the zappa json config
+data[stage]["events"] = [{
             "function": "%s" % triggerFunction,
             "event_source": {
                   "arn":  "%s" %bucketArn,
