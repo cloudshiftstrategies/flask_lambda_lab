@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 from __future__ import print_function
-import boto3, urllib
+import boto3, urllib, sys
 from PIL import Image
 from app import app
+
 
 client = boto3.client('s3')
 
@@ -20,8 +21,12 @@ def s3_uploadTrigger(event, context):
     # It should work like this:
     #key = event['Records'][0]['s3']['object']['key']
     # But the fix is to urlencode the event string that contains key name
-    #key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'].encode("utf8"))
-    key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], )
+    if sys.version_info[0] < 3:
+        # python2
+        key = urllib.unquote_plus(event['Records'][0]['s3']['object']['key'].encode("utf8"))
+    else:
+        # python3
+        key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], )
     print("Trigger Bucket: '%s', Key: '%s'" %(bucket, key))
 
     # Download the uploaded file from S3 save to writable tmp space.
