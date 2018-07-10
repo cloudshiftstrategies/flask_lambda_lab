@@ -4,6 +4,7 @@ This script adds a trigger to the zappa_settings file
 The Trigger is for the UPLOAD_BUCKET defined in the bucket_config file
 And calls our app/events.py s3_uploadTrigger() function
 """
+from __future__ import print_function
 
 import json, datetime, os, bucketConfig
 from pprint import pprint
@@ -25,21 +26,23 @@ if not os.path.exists(backupDir):
 
 # Make sure that the zappa_settings file exists
 if not os.path.isfile(zappa_settings):
-    print "Required file: %s doesnt exist. quitting" % zappa_settings
-    print "Try running 'zappa init' or get a copy from: %s" %backupDir
+    print("Required file: %s doesnt exist. quitting" % zappa_settings)
+    print("Try running 'zappa init' or get a copy from: %s" %backupDir)
     exit(1)
 
 # Backup the zappa settings file
 datestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 backupFile = "%s/%s.%s" %(backupDir, zappa_settings, datestamp)
-print "Backing up zappa_settings to %s" %backupFile
+print("Backing up zappa_settings to %s" %backupFile)
 copyfile( zappa_settings, backupFile )
 
 # Read the zappa setting json file
 with open(zappa_settings) as data_file:
     data = json.load(data_file)
 
-stage = data.keys()[0]
+# Not python 3 compatible
+#stage = data.keys()[0]
+for item in data: stage = item
 
 # Insert our event trigger into the zappa json config
 data[stage]["events"] = [{
@@ -53,12 +56,12 @@ data[stage]["events"] = [{
             }]
 
 # Tell the user what we are doing
-print "Configurting s3 event: '%s'" %s3event
-print " On s3 bucket: '%s'" %bucketArn
-print " That triggers function: '%s'" %triggerFunction
+print("Configurting s3 event: '%s'" %s3event)
+print(" On s3 bucket: '%s'" %bucketArn)
+print(" That triggers function: '%s'" %triggerFunction)
 
 # Write the json to the zappa config file
-print "Writing these settings to %s" % zappa_settings
+print("Writing these settings to %s" % zappa_settings)
 data_file = open(zappa_settings,'w')
 data_file.write(json.dumps(data, indent=4))
 data_file.close()
