@@ -11,7 +11,7 @@
 		<div class=col-md-6>
 			<form action="{{ post['url'] }}" method="POST" 
 						enctype="multipart/form-data">
-				{% for parmName, value in post['fields'].iteritems() %}
+				{% for parmName, value in post['fields'].items() %}
 					<input type="hidden" name="{{ parmName }}" value="{{ value }}" />
 				{% endfor %}
 				<div class=row>
