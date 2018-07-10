@@ -45,7 +45,9 @@ def gallery():
     """
 
     from boto3 import resource, client
-    from urllib import quote
+    # Not python 3 compatible
+    #from urllib import quote
+    from urllib.parse import quote
 
     # connect to s3
     s3 = resource('s3')
