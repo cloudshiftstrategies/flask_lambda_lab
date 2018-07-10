@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 """
 This script deletes s3 buckets used in the lab and thier contents
 It also moves the zappa and bucket config files to a backup dir
@@ -13,15 +14,17 @@ backupDir='./backups'
 
 # Make sure a zappa_settings.json file exists
 if not os.path.isfile(zappa_settings):
-    print "Required file: %s doesnt exist. quitting" % zappa_settings
-    print "Try restoring copy from %s: or running 'zappa init'" % backupDir
+    print("Required file: %s doesnt exist. quitting" % zappa_settings)
+    print("Try restoring copy from %s: or running 'zappa init'" % backupDir)
     exit(1)
 
 # Read the zappa_settings file
 with open(zappa_settings) as data_file:
 	data = json.load(data_file)
 # Get the first stage name defined in the config file
-stage=data.keys()[0]
+# Not python 3 compatible
+#stage=data.keys()[0]
+for item in data: stage = item
 
 # set the bucket name pattern
 bucketStr = "flasklambdalab-%s-" %stage
@@ -34,15 +37,15 @@ for bucket in client.list_buckets()['Buckets']:
     # see if bucket name matches our name pattern
     if bucketStr in bucket['Name']:
         # we have a match, but we have to delete the contents first
-        print "deleting objects in bucket: %s" % bucket['Name']
-        if client.list_objects(Bucket=bucket['Name']).has_key('Contents'):
+        print("deleting objects in bucket: %s" % bucket['Name'])
+        if 'Contents' in client.list_objects(Bucket=bucket['Name']):
             # List all the objects in the bucket
             for obj in client.list_objects(Bucket=bucket['Name'])['Contents']:
                 # Delete each object
-                print "  deleting object: %s" % obj['Key']
+                print("  deleting object: %s" % obj['Key'])
                 client.delete_object(Bucket=bucket['Name'], Key=obj['Key'])
         # Now we can delete the bucket
-        print "deleting bucket: %s" % bucket['Name']
+        print("deleting bucket: %s" % bucket['Name'])
         client.delete_bucket(Bucket=bucket['Name'])
 
 # Make sure the backup directory exists
@@ -54,5 +57,5 @@ datestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 for f in (zappa_settings, bucket_config):
     backupFile = "%s/%s.%s" %(backupDir, f, datestamp)
     if os.path.isfile(f):
-        print "Moving %s to %s" %(f, backupFile)
+        print("Moving %s to %s" %(f, backupFile))
         shutil.move( f, backupFile )
