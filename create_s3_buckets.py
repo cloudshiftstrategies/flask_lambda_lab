@@ -11,7 +11,7 @@ and the s3_eventTrigger function. We get the region name from the
 zappa_settings file
 """
 
-import boto3, json, uuid
+import boto3, json, uuid, os
 
 bucketConfig = 'bucketConfig.py'
 bucketAcl = 'public-read'
@@ -23,8 +23,21 @@ thumbBucket = None
 zappa_settings = 'zappa_settings.json'
 with open(zappa_settings) as data_file:
    data = json.load(data_file)
-stage=data.keys()[0]
-region=data[stage]['aws_region']
+
+# The following is a non-python 3 compatibe function
+#stage=data.keys()[0]
+# The following is python 2 and 3 compatible
+for item in data: stage = item
+
+if 'aws_region' in data[stage]:
+    print ("setting region from zappa_settings")
+    region=data[stage]['aws_region']
+elif 'AWS_DEFAULT_REGION' in os.environ:
+    print ("setting region from env variable AWS_DEFAULT_REGION")
+    region = os.environ['AWS_DEFAULT_REGION']
+else:
+    print ("setting region to default us-east-1")
+    region = 'us-east-1'
 
 print("Using aws region: %s" % region)
 
