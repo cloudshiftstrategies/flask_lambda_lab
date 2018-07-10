@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 """
 This script creates (or updates) 2 s3 buckets. One for uploads and the
 other bucket is to store thumbnails. We then write the bucket names
@@ -25,7 +26,7 @@ with open(zappa_settings) as data_file:
 stage=data.keys()[0]
 region=data[stage]['aws_region']
 
-print "Using aws region: %s" % region
+print("Using aws region: %s" % region)
 
 uploadPrefix = "flasklambdalab-%s-uploads-" %stage
 thumbPrefix = "flasklambdalab-%s-thumbnails-" %stage
@@ -51,7 +52,7 @@ for bucket in client.list_buckets()['Buckets']:
         if bucketRegion == region:
             #its in the right region, get the bucket name
             uploadBucket = bucket['Name']
-            print "Found existing upload bucket: '%s'" % uploadBucket
+            print("Found existing upload bucket: '%s'" % uploadBucket)
 
     # Check to see if the bucket has our thumb pattern
     if thumbPrefix in bucket['Name']:
@@ -61,7 +62,7 @@ for bucket in client.list_buckets()['Buckets']:
         if bucketRegion == region:
             #its in the right region, get the bucket name
             thumbBucket = bucket['Name']
-            print "Found existing thumb bucket: '%s'" % thumbBucket
+            print("Found existing thumb bucket: '%s'" % thumbBucket)
 
 # Check to see if the previous loop found an upload bucket
 if not uploadBucket:
@@ -69,7 +70,7 @@ if not uploadBucket:
     # Set the new bucket name
     uploadBucket = uploadPrefix + str(uuid.uuid1())[:8]
     # And create the bucket
-    print "Creating upload bucket: '%s'" % uploadBucket
+    print("Creating upload bucket: '%s'" % uploadBucket)
     if region == 'us-east-1':
         client.create_bucket(Bucket=uploadBucket)
     else:
@@ -82,7 +83,7 @@ if not thumbBucket:
     # Set the new bucket name
     thumbBucket = thumbPrefix + str(uuid.uuid1())[:8]
     # And create the bucket
-    print "Creating thumb bucket: '%s'" % thumbBucket
+    print("Creating thumb bucket: '%s'" % thumbBucket)
     if region == 'us-east-1':
         client.create_bucket(Bucket=thumbBucket)
     else:
@@ -90,13 +91,13 @@ if not thumbBucket:
                 CreateBucketConfiguration = {'LocationConstraint': region})
 
 # Set the ACLs for the bucket (new or existing)
-print "Setting bucket ACLs: '%s'" % bucketAcl
+print("Setting bucket ACLs: '%s'" % bucketAcl)
 client.put_bucket_acl(Bucket=uploadBucket, ACL=bucketAcl)
 client.put_bucket_acl(Bucket=thumbBucket, ACL=bucketAcl)
 
 # Create a webserver for the bucket
 webConfig = { "IndexDocument": { "Suffix": "index.html" } }
-print "Creating bucket Websites"
+print("Creating bucket Websites")
 client.put_bucket_website(Bucket=uploadBucket, WebsiteConfiguration=webConfig)
 client.put_bucket_website(Bucket=thumbBucket, WebsiteConfiguration=webConfig)
 
@@ -105,12 +106,12 @@ corsConfig = { 'CORSRules':[ {
                 'AllowedOrigins': [ '*' ],
                 'AllowedMethods': [ 'GET', 'POST' ],
             } ] }
-print "Enabling CORS on buckets"
+print("Enabling CORS on buckets")
 client.put_bucket_cors(Bucket=uploadBucket, CORSConfiguration=corsConfig)
 client.put_bucket_cors(Bucket=thumbBucket, CORSConfiguration=corsConfig)
 
 # Write the bucket name to the config file for use in application
-print "Writing config file: '%s'" % bucketConfig
+print("Writing config file: '%s'" % bucketConfig)
 cfgFile = open(bucketConfig, 'w')
 cfgFile.write("UPLOAD_BUCKET = '%s'\n" % uploadBucket)
 cfgFile.write("THUMB_BUCKET = '%s'\n" % thumbBucket)
